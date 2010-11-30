@@ -29,6 +29,9 @@ email = config.get('Aegir', 'email')
 domain = config.get('Aegir', 'domain')
 version = config.get('Aegir', 'version')
 
+if version != "HEAD":
+	version = 'provision-' + version
+
 def dependency_check():
 	try:
 		open(os.path.expanduser("~/.ssh/id_rsa.pub")).read()
