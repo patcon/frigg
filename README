@@ -19,7 +19,9 @@ Dependencies
 
  * python
  * libcloud
-
+ * python-paramiko
+ * You need an ssh private/public keypair in the .ssh directory of the user you're executing frigg as, because the public key will be copied to the new VPS to let you login.
+ * My libcloud fork (git://github.com/mig5/libcloud.git) has a patch to catch the root user's password to stdout (not that useful since you need a key anyway))
 
 Usage
 -----

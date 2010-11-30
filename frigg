@@ -29,12 +29,27 @@ email = config.get('Aegir', 'email')
 domain = config.get('Aegir', 'domain')
 version = config.get('Aegir', 'version')
 
+def dependency_check():
+	try:
+		open(os.path.expanduser("~/.ssh/id_rsa.pub")).read()
+	except IOError:
+		print "You need at least a public key called id_rsa.pub in your .ssh directory"
+		sys.exit(1)
+	try:
+		import paramiko
+	except ImportError:
+		print "You need the Paramiko SSH module for Python installed (apt-get install python-paramiko)"
+		sys.exit(1)
+
 # Helper script to generate a random password
 def gen_passwd():
 	N=6
 	return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(N))
 
 def main():
+	# Run some tests
+	dependency_check()
+
 	# Make a new connection
 	Driver = get_driver( getattr(Provider, provider_driver) )
 	conn = Driver(user, key)
@@ -53,7 +68,7 @@ def main():
 	newpass = gen_passwd()
 
 	# Commands to run immediately after installation
-	dispatch = [ 
+	dispatch = [
 		SSHKeyDeployment(open(os.path.expanduser("~/.ssh/id_rsa.pub")).read()),
 		ScriptDeployment("apt-get update"),
 		ScriptDeployment("echo 'postfix postfix/main_mailer_type select Internet Site' | debconf-set-selections"),
@@ -75,8 +90,11 @@ def main():
 	print "Provisioning server and running deployment processes"
 	node = conn.deploy_node(name=domain, image=preferred_image[0], size=preferred_size[0], deploy=msd)
 
-	print "Provisioning complete, you can ssh as root to %s\n" % node.public_ip[0]
-	print "Check your e-mail for the Login url to the Aegir frontend\n"
+	print "Provisioning complete, you can ssh as root to %s" % node.public_ip[0]
+	if node.extra.get('password'):
+		print "The root user's password is %s" % node.extra.get('password')
+	print "The root MySQL user's password is %s" % newpass
+	print "Check your e-mail for the Login url to the Aegir frontend"
 
 if __name__ == "__main__":
 	main()
