@@ -10,6 +10,8 @@ Caveats
  * Totally and ruthlessly assumes a Debian based system at the moment. Deployment commands are hardcoded apt-get commands.
  * Needs sanity checking of values in the .ini, and probably elsewhere too.
  * maybe I should make the Aegir URL an arg and not from the ini, to make it faster to pump out Aegir servers
+ * Can currently only be used with a VPS provider supported by libcloud that supports libcloud's deploy_node function. Some may not.
+   According to libcloud's docs, deploy_node 'Depends on a Provider Driver supporting either using a specific password or returning a generated password.'
 
 
 Dependencies
@@ -29,12 +31,3 @@ You'll receive the standard one-time login e-mail for your Aegir installation on
 
 Editing DNS/your hosts file to make the Aegir URL resolvable to the new server's IP is your responsibility.
 
-
-Supported VPS providers
------------------------
-
-Theoretically you can use this with any VPS provider supported by libcloud that supports the deploy_node function.
-
-The deploy_node function is a combination of creating a server and running a bunch of commands on it. I believe Amazon EC2 doesn't support it.
-
-According to libcloud's docs, 'Depends on a Provider Driver supporting either using a specific password or returning a generated password.'
