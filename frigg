@@ -27,7 +27,7 @@ config_size = config.get(provider, 'size')
 # These are used as options to Aegir during install
 email = config.get('Aegir', 'email')
 domain = config.get('Aegir', 'domain')
-aegir_version = config.get('Aegir', 'aegir_version')
+version = config.get('Aegir', 'version')
 
 # Helper script to generate a random password
 def gen_passwd():
@@ -66,7 +66,7 @@ def main():
 		ScriptDeployment("ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf"),
 		ScriptDeployment("useradd -r -U -d /var/aegir -m -G www-data aegir"),
 		ScriptDeployment("echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' >> /etc/sudoers"),
-		ScriptDeployment("wget -O /tmp/install.sh 'http://git.aegirproject.org/?p=provision.git;a=blob_plain;f=install.sh.txt;hb=%s'" % aegir_version),
+		ScriptDeployment("wget -O /tmp/install.sh 'http://git.aegirproject.org/?p=provision.git;a=blob_plain;f=install.sh.txt;hb=%s'" % version),
 		ScriptDeployment("mkdir /var/aegir/.drush"),
 		ScriptDeployment("chown aegir.aegir /var/aegir/.drush"),
 		ScriptDeployment("su - -s /bin/sh aegir -c 'sh /tmp/install.sh %s --client_email=%s --aegir_db_pass=%s --yes'" % tuple([ domain, email, newpass]))
