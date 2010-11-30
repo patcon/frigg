@@ -67,8 +67,6 @@ def main():
 		ScriptDeployment("useradd -r -U -d /var/aegir -m -G www-data aegir"),
 		ScriptDeployment("echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' >> /etc/sudoers"),
 		ScriptDeployment("wget -O /tmp/install.sh 'http://git.aegirproject.org/?p=provision.git;a=blob_plain;f=install.sh.txt;hb=%s'" % version),
-		ScriptDeployment("mkdir /var/aegir/.drush"),
-		ScriptDeployment("chown aegir.aegir /var/aegir/.drush"),
 		ScriptDeployment("su - -s /bin/sh aegir -c 'sh /tmp/install.sh %s --client_email=%s --aegir_db_pass=%s --yes'" % tuple([ domain, email, newpass]))
 	]
 	msd = MultiStepDeployment(dispatch) 
