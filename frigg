@@ -79,7 +79,7 @@ def main():
 		ScriptDeployment("echo 'postfix postfix/destinations string localhost.localdomain, localhost' | debconf-set-selections"),
 		ScriptDeployment("echo mysql-server mysql-server/root_password select %s | debconf-set-selections" % newpass),
 		ScriptDeployment("echo mysql-server mysql-server/root_password_again select %s | debconf-set-selections" % newpass ),
-		ScriptDeployment("apt-get -y install apache2 php5 php5-cli php5-gd php5-mysql postfix mysql-server sudo rsync git-core unzip"),
+		ScriptDeployment("apt-get -y --force-yes install apache2 php5 php5-cli php5-gd php5-mysql postfix mysql-server sudo rsync git-core unzip"),
 		ScriptDeployment("a2enmod rewrite"),
 		ScriptDeployment("ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf"),
 		ScriptDeployment("useradd -r -U -d /var/aegir -m -G www-data aegir"),
